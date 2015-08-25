@@ -1,6 +1,4 @@
-Given GEDCOM file, the program groups persons by haplogroups and prints different kinds of reports including atree. 
-Given atree - the program generates GEDCOM file from it. 
-Utility also can be used for text files transcoding (including into phonetic from russian windows-1251 GEDCOMs etc).
+Given GEDCOM file, the program groups persons by haplogroups and prints different kinds of reports including atree and some statistics. Given atree, the program generates GEDCOM file from it. Utility also can be used for text files transcoding (including into phonetic from russian windows-1251 GEDCOMs etc).
 
 ========================================================================
 Installation:
