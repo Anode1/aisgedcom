@@ -1,0 +1,285 @@
+0 HEAD
+1 SOUR AISGEDCOM
+2 NAME AISGEDCOM
+2 VERS 0.7
+1 CHAR ANSI
+1 DATE 17 JUL 2012
+1 GEDC 
+2 VERS 5.5.1
+2 FORM Lineage-Linked
+0 @I1@ INDI
+1 _UID sfAILIbcpd
+1 NAME /Гаврилов/
+1 SEX M
+1 BIRT
+1 FAMC @F11@
+1 FAMS @F100@ 
+0 @I2@ INDI
+1 _UID sfAIL1fQZM
+1 NAME /Гаврилов/
+1 SEX M
+1 BIRT
+1 FAMC @F6@
+1 FAMS @F11@
+0 @I3@ INDI
+1 _UID sfAILOZ4ns
+1 NAME /Гаврилова (Гусева)/
+1 SEX F
+1 BIRT
+2 DATE 1942
+1 FAMC @F2@
+1 DEAT
+1 FAMS @F11@
+0 @I4@ INDI
+1 _UID sfAILA3Py1
+1 NAME Георгий Константинович /Гаврилов/
+1 SEX M
+1 BIRT
+2 DATE 1914
+1 DEAT
+2 DATE FEB 1942
+2 PLAC 
+1 FAMC @F4@
+1 FAMS @F6@
+0 @I5@ INDI
+1 _UID sfAILmH7T5
+1 NAME Домна Гавриловна /Ившина/
+1 SEX F
+1 BIRT
+2 DATE 1914
+1 DEAT
+2 DATE 1942
+2 PLAC
+1 FAMC @F8@
+1 FAMS @F6@
+0 @I6@ INDI
+1 _UID sfAILKUgOT
+1 NAME   /Гусев/
+1 SEX M
+1 BIRT
+1 FAMC @F1@
+1 FAMS @F2@
+0 @I7@ INDI
+1 _UID sfAIL75XTz
+1 NAME   /Гусева (Маринова)/
+1 SEX F
+1 BIRT
+2 DATE 20 DEC 1914
+1 DEAT
+2 DATE 2004
+2 PLAC 
+1 FAMC @F12@
+1 FAMS @F2@
+0 @I8@ INDI
+1 _UID sfAILY8iCK
+1 NAME Константин Иванович /Гаврилов/
+1 SEX M
+1 BIRT
+2 DATE
+2 PLAC 1 FAMC @F5@
+1 FAMC @F9@
+1 RESI 
+1 FAMS @F4@
+0 @I9@ INDI
+1 _UID sfAILtljHk
+1 NAME Татьяна Иосифовна //
+1 SEX F
+1 BIRT
+1 RESI 
+1 FAMS @F4@
+0 @I10@ INDI
+1 _UID sfAILR3jSJ
+1 NAME Иван Гаврилович /Гаврилов/
+1 SEX M
+1 BIRT
+1 DEAT
+2 DATE 10 DEC 1896
+2 PLAC 
+1 RESI 
+1 FAMS @F9@
+0 @I11@ INDI
+1 _UID sfAILpD7YK
+1 NAME Наталья Ивановна //
+1 SEX F
+1 BIRT
+1 DEAT
+2 DATE 10 JAN 1906
+2 PLAC 
+1 RESI 
+1 FAMS @F9@
+0 @I12@ INDI
+1 _UID sfAILx7AUN
+1 NAME Гавриил Николаевич /Ившин/
+1 SEX M
+1 BIRT
+2 DATE 10 JUL 1887
+2 PLAC 
+1 FAMC @F3@
+1 RESI 
+1 FAMS @F8@
+0 @I13@ INDI
+1 _UID sfAILiapFg
+1 NAME Александра Тимофеевна /Кашина/
+1 SEX F
+1 BIRT
+2 DATE 9 APR 1883
+2 PLAC 
+1 FAMS @F6@
+1 RESI 
+1 FAMS @F8@
+0 @I14@ INDI
+1 _UID sfAILFqW8P
+1 NAME Николай Афанасьевич /Ившин/
+1 SEX M
+1 BIRT
+1 DEAT
+2 DATE 1 JAN 1907
+2 PLAC 
+1 FAMC @F10@
+1 RESI 
+1 FAMS @F3@
+0 @I15@ INDI
+1 _UID sfAIL7lbB3
+1 NAME Марфа Ивановна //
+1 SEX F
+1 BIRT
+2 DATE 1855
+2 PLAC 
+1 RESI 
+1 FAMS @F3@
+0 @I16@ INDI
+1 _UID sfAILZncTY
+1 NAME Афанасий Тимофеевич /Ившин/
+1 SEX M
+1 BIRT
+1 DEAT
+2 DATE 1878
+1 RESI 
+1 FAMS @F10@
+0 @I17@ INDI
+1 _UID sfAILfJzZt
+1 NAME   //
+1 SEX F
+1 BIRT
+1 RESI 
+1 FAMS @F10@
+0 @I18@ INDI
+1 _UID sfAILtbrTw
+1 NAME Николай Герасимович /Гусев/
+1 SEX M
+1 BIRT
+1 FAMS @F1@
+0 @I19@ INDI
+1 _UID sfAILPdeYL
+1 NAME Евдокия Николаевна //
+1 SEX F
+1 BIRT
+1 FAMC @F7@
+1 FAMS @F1@
+0 @I20@ INDI
+1 _UID sfAILFsiFT
+1 NAME   //
+1 SEX M
+1 BIRT
+1 FAMS @F7@
+0 @I21@ INDI
+1 _UID sfAILQq3FR
+1 NAME   //
+1 SEX F
+1 BIRT
+1 FAMS @F7@
+0 @I22@ INDI
+1 _UID sfAILbEVH8
+1 NAME Иван Дормидонтович /Маринов/
+1 SEX M
+1 BIRT
+1 DEAT
+2 DATE 21 AUG 1943
+2 PLAC 
+1 FAMC @F5@
+1 RESI 
+1 FAMS @F12@
+0 @I23@ INDI
+1 _UID sfAILsAhDA
+1 NAME Надежда Кирилловна /Маринова (Ерёмина)/
+1 SEX F
+1 BIRT
+1 DEAT
+2 DATE 7 SEP 1954
+2 PLAC 
+1 RESI 
+1 FAMS @F12@
+0 @I24@ INDI
+1 _UID sfAILrRvqF
+1 NAME Доримедонт Пахомович /Маринов/
+1 SEX M
+1 BIRT
+1 DEAT
+2 DATE 2 AUG 1885
+2 PLAC 
+1 RESI 
+1 FAMS @F5@
+0 @I25@ INDI
+1 _UID sfAILXOuXL
+1 NAME   //
+1 SEX F
+1 BIRT
+1 RESI 
+1 FAMS @F5@
+0 @F1@ FAM
+1 HUSB @I18@
+1 WIFE @I19@
+1 CHIL @I6@
+0 @F2@ FAM
+1 HUSB @I6@
+1 WIFE @I7@
+1 CHIL @I3@
+0 @F3@ FAM
+1 HUSB @I14@
+1 WIFE @I15@
+1 CHIL @I12@
+0 @F4@ FAM
+1 HUSB @I8@
+1 WIFE @I9@
+1 CHIL @I4@
+0 @F5@ FAM
+1 HUSB @I24@
+1 WIFE @I25@
+1 CHIL @I22@
+0 @F6@ FAM
+1 HUSB @I4@
+1 WIFE @I5@
+1 CHIL @I2@
+0 @F7@ FAM
+1 HUSB @I20@
+1 WIFE @I21@
+1 CHIL @I19@
+0 @F8@ FAM
+1 HUSB @I12@
+1 WIFE @I13@
+1 CHIL @I5@
+0 @F9@ FAM
+1 HUSB @I10@
+1 WIFE @I11@
+1 CHIL @I8@
+0 @F10@ FAM
+1 HUSB @I16@
+1 WIFE @I17@
+1 CHIL @I14@
+0 @F11@ FAM
+1 HUSB @I2@
+1 WIFE @I3@
+1 CHIL @I1@
+0 @F12@ FAM
+1 HUSB @I22@
+1 WIFE @I23@
+1 CHIL @I7@
+0 @F100@ FAM
+1 HUSB @I1@
+1 CHIL @I100@
+0 @I100@ INDI
+1 NAME Test /Test/
+1 SEX M
+1 BIRT
+1 FAMC @F1@
+0 TRLR

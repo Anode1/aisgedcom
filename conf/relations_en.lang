@@ -1,0 +1,23 @@
+#
+#Do not change keys (left parts)! Change only the right parts - after '='
+#
+mother=mother
+father=father
+sister=sister
+brother=brother
+son=son
+daughter=daughter
+grandmother=grandmother
+grandfather=grandfather
+grandson=grandson
+granddaughter=granddaughter
+aunt=aunt
+uncle=uncle
+nephew=nephew
+niece=niece
+great-uncle=great-uncle
+great-aunt=great-aunt
+grand-nephew=grand-nephew
+grand-niece=grand-niece
+cousin=cousin
+prefix=g.-

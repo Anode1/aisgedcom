@@ -1,0 +1,3 @@
+* ANSEL support (?)
+* more languages
+* saving of other user-specific data from gui components between sessions

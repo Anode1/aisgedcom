@@ -1,0 +1,13 @@
+#!/bin/sh
+
+CP=.
+CP=${CP}:./classes
+CP=${CP}:./lib/log4j.jar
+CP=${CP}:./aisgedcom.jar
+
+if [ "$OSTYPE" = "cygwin32" ] || [ "$OSTYPE" = "cygwin" ] || [ "$OS" = "Windows_NT" ] ; then
+  CP=`cygpath --path --windows "${CP}"`
+fi
+
+#Set JVM parameters here - such as -Xmx1024 etc 
+java -classpath "${CP}:${CLASSPATH}" org.is.ais.gedcom.gui.MainFrame "$@"

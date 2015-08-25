@@ -1,0 +1,73 @@
+0 HEAD
+1 SOUR ALTREE
+2 NAME Agelong Tree
+2 VERS 4.2
+2 CORP Genery Software
+2 ADDR http://www.genery.com
+1 CHAR UTF-8
+1 DATE 19 DEC 2011
+1 GEDC 
+2 VERS 5.5.1
+2 FORM Lineage-Linked
+0 @I1@ INDI
+1 _UID sXGDTeQjYA
+1 NAME   /Subject/
+1 SEX M
+1 BIRT
+1 FAMC @F2@
+0 @I2@ INDI
+1 _UID sXGeHMW1Cw
+1 NAME   /Father/
+1 SEX M
+1 BIRT
+1 FAMC @F3@
+1 FAMS @F2@
+0 @I3@ INDI
+1 _UID sXGexKz6Z1
+1 NAME   /grandfather/
+1 SEX M
+1 BIRT
+1 FAMC @F1@
+1 FAMS @F3@
+0 @I4@ INDI
+1 _UID sXGEGUA1um
+1 NAME   /grandgrandfather/
+1 SEX M
+1 FAMS @F1@
+0 @I5@ INDI
+1 _UID sXGfbPuV9a
+1 NAME   /dvoyurodniy ded/
+1 SEX M
+1 BIRT
+1 FAMC @F1@
+1 FAMS @F4@
+0 @I6@ INDI
+1 _UID sXGfkXch4l
+1 NAME   /dvoyurodniy dyadya/
+1 SEX M
+1 BIRT
+1 FAMC @F4@
+1 FAMS @F5@
+0 @I7@ INDI
+1 _UID sXGfRA63Od
+1 NAME   /troyurodniy brat/
+1 SEX M
+1 BIRT
+1 FAMC @F5@
+0 @F1@ FAM
+1 HUSB @I4@
+1 CHIL @I3@
+1 CHIL @I5@
+0 @F2@ FAM
+1 HUSB @I2@
+1 CHIL @I1@
+0 @F3@ FAM
+1 HUSB @I3@
+1 CHIL @I2@
+0 @F4@ FAM
+1 HUSB @I5@
+1 CHIL @I6@
+0 @F5@ FAM
+1 HUSB @I6@
+1 CHIL @I7@
+0 TRLR

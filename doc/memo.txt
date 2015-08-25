@@ -1,0 +1,9 @@
+GEDCOM spec: 
+http://homepages.rootsweb.ancestry.com/~pmcbride/gedcom/55gcint.htm
+
+svn://svn.code.sf.net/p/aisgedcom/code/trunk
+
+Russian forum:
+  http://forum.molgen.org/index.php/topic,3065.msg111328.html#msg111328
+  http://forum.molgen.org/index.php/topic,3065.msg111477.html#msg111477
+  http://forum.molgen.org/index.php/topic,3065.msg111729.html#msg111729

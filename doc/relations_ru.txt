@@ -1,0 +1,93 @@
+﻿==========================
+Russian relations names
+==========================
+
+Most of terms (simple ones, like father, brother, uncle, g.-grandfather etc)
+are just mapped from English, reusing the same logic (formulas).
+(See ../conf/relations_ru.lang for those: they are just analogs of 
+../conf/relations_en.lang).
+One-to-one mapping works for the shortest path<3.
+However, there are changes (for the shortest path >=3 only) which are enumerated 
+here:
+
+Cousins:
+======== 
+(the same number of letters, i.e. the same length of 2 branches from the ancestor):
+in English для равных количеств букв:
+X(X*N)X , X(X*N)X  =  N-cousin,N-cousin
+in English для различных количеств букв (M>N): 
+X(X*N)X , X(X*M)X  =  N-cousin (M-N) removed, N-cousin (M-N) removed 
+
+Cousins in Russian:
+M(X*N)X , M(X*N)X  =  N+1-юродный брат, N+1-юродный брат 
+M(X*N)X , F(X*N)X  =  N+1-юродный брат, N+1-юродная сестра
+F(X*N)X , M(X*N)X  =  N+1-юродная сестра, N+1-юродный брат
+F(X*N)X , F(X*N)X  =  N+1-юродная сестра, N+1-юродная сестра
+
+Not Cousins (different levels):
+===============================
+For M>N (N is always >0! Other cases are in trivial cases, having one-to-one 
+correspondence with English):
+
+M-N=1 - дядя; M-N=2 - дед; M-N=3 - прадед; M-N=n - (n-2)раз пра- дед
+
+т.е. дядьёв и тёть надобно разбирать отдельно
+M-N=1:
+М(X*N)Х , М(X*M)Х = M-юродный дядя, M-юродный племянник
+М(X*N)Х , F(X*M)Х = M-юродный дядя, M-юродная племянница
+F(X*N)Х , М(X*M)Х = M-юродная тётя, M-юродный племянник
+F(X*N)Х , F(X*M)Х = M-юродная тётя, M-юродная племянница
+
+что, впрочем, можно записать и по-другому:
+М(X*N)Х , М(X*N)XХ = (N+1)-юродный дядя, (N+1)-юродный племянник
+М(X*N)Х , F(X*N)XХ = (N+1)-юродный дядя, (N+1)-юродная племянница
+F(X*N)Х , М(X*N)XХ = (N+1)-юродная тётя, (N+1)-юродный племянник
+F(X*N)Х , F(X*N)XХ = (N+1)-юродная тётя, (N+1)-юродная племянница
+
+для дедов-внуков:
+M-N=2 
+М(X*N)Х , М(X*M)Х = (N+2)-юродный дед, (N+1)-юродный внучатый племянник
+М(X*N)Х , F(X*M)Х = (N+2)-юродный дед, (N+1)-юродная внучатая племянница
+F(X*N)Х , М(X*M)Х = (N+2)-юродная бабка, (N+1)-юродный внучатый племянник
+F(X*N)Х , F(X*M)Х = (N+2)-юродная бабка, (N+1)-юродная внучатая племянница
+
+для общего случая с "пра-" (это справедливо и для M-N=2, т.е. предыдущего случая, как будто бы "пра-" показывалось 0 раз):
+М(X*N)Х , М(X*M)Х = (N+2)-юродный (M-N-2)-раза пра- дед, (N+1)-юродный (M-N-2)-раза внучатый племянник
+М(X*N)Х , F(X*M)Х = (N+2)-юродный (M-N-2)-раза пра- дед, (N+1)-юродная (M-N-2)-раза внучатая племянница
+F(X*N)Х , М(X*M)Х = (N+2)-юродная (M-N-2)-раза пра- бабка, (N+1)-юродный (M-N-2)-раза внучатый племянник
+F(X*N)Х , F(X*M)Х = (N+2)-юродная (M-N-2)-раза пра- бабка, (N+1)-юродная (M-N-2)-раза внучатая племянница
+
+
+первые четыре уровня:
+MXX , МXХX = first cousin once removed=двоюродный дядя, first cousin once removed=двоюродный племянник
+MXX , FХХХ = first cousin once removed=двоюродный дядя, first cousin once removed=двоюродная племянница
+FХX , МХХХ = first cousin once removed=двоюродная тётя, first cousin once removed=двоюродный племянник
+FХX , FХХХ = first cousin once removed=двоюродная тётя, first cousin once removed=двоюродная племянница
+
+MXX , МXХХX = first cousin twice removed=троюродный дед, first cousin twice removed=двоюродный внучатый племянник
+MXX , FXХХX = first cousin twice removed=троюродный дед, first cousin twice removed=двоюродная внучатая племянница
+FXX , МXХХX = first cousin twice removed=троюродная бабка, first cousin twice removed=двоюродный внучатый племянник
+FXX , FXХХX = first cousin twice removed=троюродная бабка, first cousin twice removed=двоюродная внучатая племянница
+
+MХХХ , МХХХХ = second cousin once removed=троюродный дядя, second cousin once removed=троюродный племянник
+MХХХ , FХХХХ = second cousin once removed=троюродный дядя, second cousin once removed=троюродная племянница
+FХХХ , МХХХХ = second cousin once removed=троюродная тётя, second cousin once removed=троюродный племянник
+FХХХ , FХХХХ = second cousin once removed=троюродная тётя, second cousin once removed=троюродная племянница
+
+МХХХ , MХХХХХ = second cousin twice removed=четвероюродный дед, second cousin twice removed=троюродный внучатый племянник
+МХХХ , FХХХХХ = second cousin twice removed=четвероюродный дед, second cousin twice removed=троюродная внучатая племянница
+FХХХ , MХХХХХ = second cousin twice removed=четвероюродная бабка, second cousin twice removed=троюродный внучатый племянник
+FХХХ , FХХХХХ = second cousin twice removed=четвероюродная бабка, second cousin twice removed=троюродная внучатая племянница
+
+расписывая N,M и diff=M-N (не длины путей!) для одного пола:
+min=N,max=M,diff=M-N
+1,2,1-двоюродный дядя,двоюродный племянник = (N+1)-юродный дядя, N+1-юродный племянник
+1,3,2-троюродный дед, двоюродный внучатый племянник = (N+2)-юродный дед, (N+2)-юродный внучатый племянник
+2,3,1-троюродный дядя, троюродный племянник = (N+1)-юродный дядя, N+1-юродный племянник
+2,4,2-четвероюродный дед, троюродный внучатый племянник = (N+2)-юродный (0 раз пра) дед, (N+1)-юродный внучатый племянник
+1,5,4-троюродный прапрадед, двоюродный 2-раза внучатый племянник = (N+2)-юродный (2 раза пра-) дед, (N+1)-юродный 2 раза внучатый племянник
+ 
+
+ 
+
+

@@ -1,0 +1,931 @@
+﻿#
+# Algorithm generating human relations terminology, useful in genealogy software development.
+#
+# Here is a formal automatic procedure (algorithm) for generating relations terms
+# from two given paths (to the MRCA - the most recent common ancestor), in English.
+# The same routine was used for languages were the same mapping can be used as for English 
+# (see below).
+# The paths are represented by single letters M (for man) or F (for women). 
+# For example, M denotes man (self), MM - his father, MMM - his grandfather, MMF - his paternal 
+# grandmother etc.
+#
+# The algorithm is not given in a form of some specific language but exists as a 
+# simple mapping: paths->relations terms.
+# Provided that the paths have been automatically generated from a binary tree or 
+# a structure.
+#
+# The notations below ( in the mapping) are 4 delimited by comma records: path1,path2,name1,name2
+# (where path1,path2 are paths from individuals to the same common ancestor)
+# We only enumarate (evaluate) the cases when LENGTH(path1)=(path2) and LENGTH(path1)<LENGTH(path2),
+# while the case LENGTH(path2)>LENGTH(path1) is just the reversed (second) case.
+# X denotes any letter/gender (either M or F). Also, the last letter in each path (when given as 
+# template X is always the same, since it denotes the same person, so
+# "self" is either (F,F) or (M,M)
+# while pair (MX,FX) denotes actually 2 pairs, not 4: (MM,FM), (MF,FF) only 
+# etc.
+# 
+# (X*N) means a sequence of N letters
+# <(g.-)*N> means prefix 'g.-' taken N times, as in 'g.-g.-g.-great-uncle' (N=3 in this case)
+# names are taken from:
+# http://upload.wikimedia.org/wikipedia/commons/7/78/European_kinship_system_en.svg
+# (with minor simplifications in abbreviations)
+#
+# The algorithm was used for automatic generating of relations terminology of any depth in aisgedcom program.
+# Regular Expressions were utilized for detecting/parsing the paths.
+#
+
+X,X,self,self
+
+MX,MX,brother,brother
+MX,FX,brother,sister
+FX,FX,sister,sister
+
+M,MM,father,son
+M,FM,father,daughter
+F,MF,mother,son
+F,FF,mother,daughter
+
+F,MXF,grandmother,grandson
+F,FXF,grandmother,granddaughter
+M,MXM,grandfather,grandson
+M,FXM,grandfather,granddaughter
+
+F,MXXF,g.-grandmother,g.-grandson
+F,FXXF,g.-grandmother,g.-granddaughter
+M,MXXM,g.-grandfather,g.-grandson
+M,FXXM,g.-grandfather,g.-granddaughter
+...
+F,MX(X*N)F,<(g.-)*N>grandmother,<(g.-)*N>grandson
+F,FX(X*N)F,<(g.-)*N>grandmother,<(g.-)*N>granddaughter
+M,MX(X*N)M,<(g.-)*N>grandfather,<(g.-)*N>grandson
+M,FX(X*N)M,<(g.-)*N>grandfather,<(g.-)*N>granddaughter
+...
+...
+MX,MXX,uncle,nephew
+MX,FXX,uncle,niece
+FX,MXX,aunt,nephew
+FX,FXX,aunt,niece
+
+MX,MXXX,great-uncle,grand-nephew
+MX,FXXX,great-uncle,grand-niece
+FX,MXXX,great-aunt,grand-nephew
+FX,FXXX,great-aunt,grand-niece
+
+MX,MXXXX,g.-great-uncle,g.-grand-nephew
+MX,FXXXX,g.-great-uncle,g.-grand-niece
+FX,MXXXX,g.-great-aunt,g.-grand-nephew
+FX,FXXXX,g.-great-aunt,g.-grand-niece
+...
+FX,FXXXX,g.-great-aunt,g.-grand-niece
+...
+MX,MXX(X*N)X,<(g.-)*N>great-uncle,<(g.-)*N>grand-nephew
+MX,FXX(X*N)X,<(g.-)*N>great-uncle,<(g.-)*N>grand-niece
+FX,MXX(X*N)X,<(g.-)*N>great-aunt,<(g.-)*N>grand-nephew
+FX,FXX(X*N)X,<(g.-)*N>great-aunt,<(g.-)*N>grand-niece
+...
+
+#
+#cousines on the same level (the same number of X)
+#
+XXX,XXX,cousin,cousin
+XXXX,XXXX,2-cousin,2-cousin
+XXXXX,XXXXX,3-cousin,3-cousin
+X(X*N)X,X(X*N)X,N-cousin,N-cousin
+
+#
+#now not on the same level (M>N)
+#
+XXX,XXXX,1-cousin once-removed,1-cousin once-removed
+XXX,XXXXX,1-cousin twice-removed,1-cousin twice-removed
+...
+XXXX,XXXXX,2-cousin once-removed,2-cousin once-removed
+XXXX,XXXXXX,2-cousin twice-removed,2-cousin twice-removed
+...
+X(X*N)X,X(X*M)X,N-cousin (M-N) removed
+
+
+=====================================================================================
+
+# Here is a similar algorithm for relations terminology in Russian language
+
+
+==========================
+Russian relations names
+==========================
+
+Most of terms (simple ones, like father, brother, uncle, g.-grandfather etc)
+are just mapped from English, reusing the same logic (formulas).
+One-to-one mapping works for the shortest path<3.
+However, there are changes (for the shortest path >=3 only) which are enumerated 
+here:
+
+Cousins:
+======== 
+(the same number of letters, i.e. the same length of 2 branches from the ancestor):
+in English для равных количеств букв:
+X(X*N)X , X(X*N)X  =  N-cousin,N-cousin
+in English для различных количеств букв (M>N): 
+X(X*N)X , X(X*M)X  =  N-cousin (M-N) removed, N-cousin (M-N) removed 
+
+Cousins in Russian:
+M(X*N)X , M(X*N)X  =  N+1-юродный брат, N+1-юродный брат 
+M(X*N)X , F(X*N)X  =  N+1-юродный брат, N+1-юродная сестра
+F(X*N)X , M(X*N)X  =  N+1-юродная сестра, N+1-юродный брат
+F(X*N)X , F(X*N)X  =  N+1-юродная сестра, N+1-юродная сестра
+
+Not Cousins (different levels):
+===============================
+For M>N (N is always >0! Other cases are in trivial cases, having one-to-one 
+correspondence with English):
+
+M-N=1 - дядя; M-N=2 - дед; M-N=3 - прадед; M-N=n - (n-2)раз пра- дед
+
+т.е. дядьёв и тёть надобно разбирать отдельно
+M-N=1:
+М(X*N)Х , М(X*M)Х = M-юродный дядя, M-юродный племянник
+М(X*N)Х , F(X*M)Х = M-юродный дядя, M-юродная племянница
+F(X*N)Х , М(X*M)Х = M-юродная тётя, M-юродный племянник
+F(X*N)Х , F(X*M)Х = M-юродная тётя, M-юродная племянница
+
+что, впрочем, можно записать и по-другому:
+М(X*N)Х , М(X*N)XХ = (N+1)-юродный дядя, (N+1)-юродный племянник
+М(X*N)Х , F(X*N)XХ = (N+1)-юродный дядя, (N+1)-юродная племянница
+F(X*N)Х , М(X*N)XХ = (N+1)-юродная тётя, (N+1)-юродный племянник
+F(X*N)Х , F(X*N)XХ = (N+1)-юродная тётя, (N+1)-юродная племянница
+
+для дедов-внуков:
+M-N=2 
+М(X*N)Х , М(X*M)Х = (N+2)-юродный дед, (N+1)-юродный внучатый племянник
+М(X*N)Х , F(X*M)Х = (N+2)-юродный дед, (N+1)-юродная внучатая племянница
+F(X*N)Х , М(X*M)Х = (N+2)-юродная бабка, (N+1)-юродный внучатый племянник
+F(X*N)Х , F(X*M)Х = (N+2)-юродная бабка, (N+1)-юродная внучатая племянница
+
+для общего случая с "пра-" (это справедливо и для M-N=2, т.е. предыдущего случая, как будто бы "пра-" показывалось 0 раз):
+М(X*N)Х , М(X*M)Х = (N+2)-юродный (M-N-2)-раза пра- дед, (N+1)-юродный (M-N-2)-раза внучатый племянник
+М(X*N)Х , F(X*M)Х = (N+2)-юродный (M-N-2)-раза пра- дед, (N+1)-юродная (M-N-2)-раза внучатая племянница
+F(X*N)Х , М(X*M)Х = (N+2)-юродная (M-N-2)-раза пра- бабка, (N+1)-юродный (M-N-2)-раза внучатый племянник
+F(X*N)Х , F(X*M)Х = (N+2)-юродная (M-N-2)-раза пра- бабка, (N+1)-юродная (M-N-2)-раза внучатая племянница
+
+
+первые четыре уровня:
+MXX , МXХX = first cousin once removed=двоюродный дядя, first cousin once removed=двоюродный племянник
+MXX , FХХХ = first cousin once removed=двоюродный дядя, first cousin once removed=двоюродная племянница
+FХX , МХХХ = first cousin once removed=двоюродная тётя, first cousin once removed=двоюродный племянник
+FХX , FХХХ = first cousin once removed=двоюродная тётя, first cousin once removed=двоюродная племянница
+
+MXX , МXХХX = first cousin twice removed=троюродный дед, first cousin twice removed=двоюродный внучатый племянник
+MXX , FXХХX = first cousin twice removed=троюродный дед, first cousin twice removed=двоюродная внучатая племянница
+FXX , МXХХX = first cousin twice removed=троюродная бабка, first cousin twice removed=двоюродный внучатый племянник
+FXX , FXХХX = first cousin twice removed=троюродная бабка, first cousin twice removed=двоюродная внучатая племянница
+
+MХХХ , МХХХХ = second cousin once removed=троюродный дядя, second cousin once removed=троюродный племянник
+MХХХ , FХХХХ = second cousin once removed=троюродный дядя, second cousin once removed=троюродная племянница
+FХХХ , МХХХХ = second cousin once removed=троюродная тётя, second cousin once removed=троюродный племянник
+FХХХ , FХХХХ = second cousin once removed=троюродная тётя, second cousin once removed=троюродная племянница
+
+МХХХ , MХХХХХ = second cousin twice removed=четвероюродный дед, second cousin twice removed=троюродный внучатый племянник
+МХХХ , FХХХХХ = second cousin twice removed=четвероюродный дед, second cousin twice removed=троюродная внучатая племянница
+FХХХ , MХХХХХ = second cousin twice removed=четвероюродная бабка, second cousin twice removed=троюродный внучатый племянник
+FХХХ , FХХХХХ = second cousin twice removed=четвероюродная бабка, second cousin twice removed=троюродная внучатая племянница
+
+расписывая N,M и diff=M-N (не длины путей!) для одного пола:
+min=N,max=M,diff=M-N
+1,2,1-двоюродный дядя,двоюродный племянник = (N+1)-юродный дядя, N+1-юродный племянник
+1,3,2-троюродный дед, двоюродный внучатый племянник = (N+2)-юродный дед, (N+2)-юродный внучатый племянник
+2,3,1-троюродный дядя, троюродный племянник = (N+1)-юродный дядя, N+1-юродный племянник
+2,4,2-четвероюродный дед, троюродный внучатый племянник = (N+2)-юродный (0 раз пра) дед, (N+1)-юродный внучатый племянник
+1,5,4-троюродный прапрадед, двоюродный 2-раза внучатый племянник = (N+2)-юродный (2 раза пра-) дед, (N+1)-юродный 2 раза внучатый племянник
+ 
+===========================================================
+# Example of the algorithm implemented in java language
+# cat Relations_en.java
+
+package org.is.ais.gedcom.tworelatives;
+
+public class Relations_en extends RelationsBase{
+	
+	public Relations_en() throws Exception{
+		super();
+	}
+	
+	
+	public String[] get(String path1, String path2){
+		
+		boolean switched=false;
+		if(path1.length()>path2.length()){
+			String temp=path1;
+			path1=path2;
+			path2=temp;
+			switched=true;
+		}
+		
+		int length1=path1.length();
+		int length2=path2.length();
+		int diff=length2-length1;
+		String first,second;
+		
+		if(diff==0){
+			// (self,self) is treated above and will never come here  
+			if(length1==2){ //brothers
+				/*
+				MX,MX,brother,brother
+				MX,FX,brother,sister
+				FX,FX,sister,sister
+				 */
+				if(path1.startsWith("M"))
+					first=strings.get("brother");
+				else
+					first=strings.get("sister");
+
+				if(path2.startsWith("M"))
+					second=strings.get("brother");
+				else
+					second=strings.get("sister");
+			}
+			else{
+				/*
+				#cousines on the same level (the same number of X)
+				XXX,XXX,cousin,cousin
+				XXXX,XXXX,2-cousin,2-cousin
+				XXXXX,XXXXX,3-cousin,3-cousin
+				X(X*N)X,X(X*N)X,N-cousin,N-cousin
+				 */
+				StringBuffer sb1=new StringBuffer();
+				StringBuffer sb2=new StringBuffer();
+
+				int prefix=length1-2;
+				if(prefix>1){
+					if(path1.startsWith("M")){
+						sb1.append(prefix);
+						sb1.append("-");
+					}
+					else{
+						sb1.append(prefix);
+						sb1.append("-");						
+					}
+					if(path2.startsWith("M")){
+						sb2.append(prefix);
+						sb2.append("-");
+					}
+					else{
+						sb2.append(prefix);
+						sb2.append("-");
+					}
+				}				
+				
+				sb1.append(strings.get("cousin"));
+				sb2.append(strings.get("cousin"));
+
+				first=sb1.toString();
+				second=sb2.toString();						
+			}//length>2 (diff==0)
+		}
+		else{ //diff > 0
+			if(length1==1){ //direct ancestor
+				if(diff==1){
+					/*
+					M,MM,father,son
+					M,FM,father,daughter
+					F,MF,mother,son
+					F,FF,mother,daughter
+					*/
+					if(path1.startsWith("M")){
+						first=strings.get("father");
+					}
+					else{
+						first=strings.get("mother");
+					}
+					if(path2.startsWith("M")){
+						second=strings.get("son");
+					}
+					else{
+						second=strings.get("daughter");
+					}
+				}
+				else{ //diff>1
+					/*
+					F,MXF,grandmother,grandson
+					F,FXF,grandmother,granddaughter
+					M,MXM,grandfather,grandson
+					M,FXM,grandfather,granddaughter
+
+					F,MXXF,g.-grandmother,g.-grandson
+					F,FXXF,g.-grandmother,g.-granddaughter
+					M,MXXM,g.-grandfather,g.-grandson
+					M,FXXM,g.-grandfather,g.-granddaughter
+					...
+					F,MX(X*N)F,<(g.-)*N>grandmother,<(g.-)*N>grandson
+					F,FX(X*N)F,<(g.-)*N>grandmother,<(g.-)*N>granddaughter
+					M,MX(X*N)M,<(g.-)*N>grandfather,<(g.-)*N>grandson
+					M,FX(X*N)M,<(g.-)*N>grandfather,<(g.-)*N>granddaughter
+					*/
+					StringBuffer sb1=new StringBuffer();
+					StringBuffer sb2=new StringBuffer();
+					//collect prefix:
+					String prefix=strings.get("prefix");
+					for(int i=2; i<diff; i++){ //for diff>2
+						sb1.append(prefix);
+						sb2.append(prefix);
+					}
+					
+					if(path1.startsWith("M")){
+						sb1.append(strings.get("grandfather"));
+					}
+					else{
+						sb1.append(strings.get("grandmother"));
+					}
+					if(path2.startsWith("M")){
+						sb2.append(strings.get("grandson"));
+					}
+					else{
+						sb2.append(strings.get("granddaughter"));
+					}
+					
+					first=sb1.toString();
+					second=sb2.toString();
+				}
+			}//end direct ancestors
+			else if(length1==2){ //not direct
+				/*
+				MX,MXX,uncle,nephew
+				MX,FXX,uncle,niece
+				FX,MXX,aunt,nephew
+				FX,FXX,aunt,niece
+
+				MX,MXXX,great-uncle,grand-nephew
+				MX,FXXX,great-uncle,grand-niece
+				FX,MXXX,great-aunt,grand-nephew
+				FX,FXXX,great-aunt,grand-niece
+
+				MX,MXXXX,g.-great-uncle,g.-grand-nephew
+				MX,FXXXX,g.-great-uncle,g.-grand-niece
+				FX,MXXXX,g.-great-aunt,g.-grand-nephew
+				FX,FXXXX,g.-great-aunt,g.-grand-niece
+				...
+				FX,FXXXX,g.-great-aunt,g.-grand-niece
+				...
+				MX,MXX(X*N)X,<(g.-)*N>great-uncle,<(g.-)*N>grand-nephew
+				MX,FXX(X*N)X,<(g.-)*N>great-uncle,<(g.-)*N>grand-niece
+				FX,MXX(X*N)X,<(g.-)*N>great-aunt,<(g.-)*N>grand-nephew
+				FX,FXX(X*N)X,<(g.-)*N>great-aunt,<(g.-)*N>grand-niece
+				*/
+				if(diff==1){	
+					if(path1.startsWith("M")){
+						first=strings.get("uncle");
+					}
+					else{
+						first=strings.get("aunt");
+					}
+					if(path2.startsWith("M")){
+						second=strings.get("nephew");
+					}
+					else{
+						second=strings.get("niece");
+					}
+				}
+				else{ //diff>=2
+					StringBuffer sb1=new StringBuffer();
+					StringBuffer sb2=new StringBuffer();
+					//collect prefix:
+					String prefix=strings.get("prefix");
+					for(int i=2; i<diff; i++){ //for diff>2
+						sb1.append(prefix);
+						sb2.append(prefix);
+					}					
+					
+					if(path1.startsWith("M")){
+						sb1.append(strings.get("great-uncle"));
+					}
+					else{
+						sb1.append(strings.get("great-aunt"));
+					}
+					if(path2.startsWith("M")){
+						sb2.append(strings.get("grand-nephew"));
+					}
+					else{
+						sb2.append(strings.get("grand-niece"));
+					}
+					
+					first=sb1.toString();
+					second=sb2.toString();					
+				}
+			}
+			else{ // length>2 (and diff > 0)
+				/*
+				XXX,XXXX,1-cousin once-removed,1-cousin once-removed
+				XXX,XXXXX,1-cousin twice-removed,1-cousin twice-removed
+				...
+				XXXX,XXXXX,2-cousin once-removed,2-cousin once-removed
+				XXXX,XXXXXX,2-cousin twice-removed,2-cousin twice-removed
+				...
+				X(X*N)X,X(X*M)X,N-cousin (M-N) removed
+				*/
+				StringBuffer sb1=new StringBuffer();
+				StringBuffer sb2=new StringBuffer();
+				
+				int prefix=length1-2;
+				if(prefix>1){
+					if(path1.startsWith("M")){
+						sb1.append(prefix);
+						sb1.append("-");
+					}
+					else{
+						sb1.append(prefix);
+						sb1.append("-");						
+					}
+					if(path2.startsWith("M")){
+						sb2.append(prefix);
+						sb2.append("-");
+					}
+					else{
+						sb2.append(prefix);
+						sb2.append("-");
+					}
+				}					
+				
+				sb1.append(strings.get("cousin"));
+				sb2.append(strings.get("cousin"));
+				
+				sb1.append(" ");
+				sb2.append(" ");
+				
+				sb1.append(diff+"-removed");
+				sb2.append(diff+"-removed");
+				
+				first=sb1.toString();
+				second=sb2.toString();					
+			}
+		}
+		
+		if(switched)
+			return new String[]{second, first};		
+		else
+			return new String[]{first, second};
+	}		
+	
+
+}
+===========================================================
+# Example of the algorithm implemented in java language
+# cat Relations_ru.java
+
+package org.is.ais.gedcom.tworelatives;
+
+public class Relations_ru extends RelationsBase{
+	
+	
+	public Relations_ru() throws Exception{
+		super();
+	}
+	
+	public String[] get(String path1, String path2){
+		
+		boolean switched=false;
+		if(path1.length()>path2.length()){
+			String temp=path1;
+			path1=path2;
+			path2=temp;
+			switched=true;
+		}
+		
+		int length1=path1.length();
+		int length2=path2.length();
+		int diff=length2-length1;
+		String first,second;
+		
+		if(diff==0){
+			// (self,self) is treated above and will never come here  
+			if(length1==2){ //brothers
+				/*
+				MX,MX,brother,brother
+				MX,FX,brother,sister
+				FX,FX,sister,sister
+				 */
+				if(path1.startsWith("M"))
+					first=strings.get("brother");
+				else
+					first=strings.get("sister");
+
+				if(path2.startsWith("M"))
+					second=strings.get("brother");
+				else
+					second=strings.get("sister");
+			}
+			else{
+				/*
+				#cousines on the same level (the same number of X)
+				XXX,XXX,cousin,cousin
+				XXXX,XXXX,2-cousin,2-cousin
+				XXXXX,XXXXX,3-cousin,3-cousin
+				X(X*N)X,X(X*N)X,N-cousin,N-cousin
+				 */
+				StringBuffer sb1=new StringBuffer();
+				StringBuffer sb2=new StringBuffer();
+
+				int prefix=length1-1;
+				if(path1.startsWith("M")){
+					sb1.append(prefix);
+					sb1.append("-");
+					sb1.append(strings.get("yurodniy")+" ");
+				}
+				else{
+					sb1.append(prefix);
+					sb1.append("-");						
+					sb1.append(strings.get("yurodnaya")+" ");
+				}
+				if(path2.startsWith("M")){
+					sb2.append(prefix);
+					sb2.append("-");
+					sb2.append(strings.get("yurodniy")+" ");
+				}
+				else{
+					sb2.append(prefix);
+					sb2.append("-");
+					sb2.append(strings.get("yurodnaya")+" ");
+				}
+				
+				if(path1.startsWith("M"))
+					sb1.append(strings.get("brother"));
+				else
+					sb1.append(strings.get("sister"));
+				
+				if(path2.startsWith("M"))
+					sb2.append(strings.get("brother"));
+				else
+					sb2.append(strings.get("sister"));				
+
+				first=sb1.toString();
+				second=sb2.toString();						
+			}//length>2 (diff==0)
+		}
+		else{ //diff > 0
+			if(length1==1){ //direct ancestor
+				if(diff==1){
+					/*
+					M,MM,father,son
+					M,FM,father,daughter
+					F,MF,mother,son
+					F,FF,mother,daughter
+					*/
+					if(path1.startsWith("M")){
+						first=strings.get("father");
+					}
+					else{
+						first=strings.get("mother");
+					}
+					if(path2.startsWith("M")){
+						second=strings.get("son");
+					}
+					else{
+						second=strings.get("daughter");
+					}
+				}
+				else{ //diff>1
+					/*
+					F,MXF,grandmother,grandson
+					F,FXF,grandmother,granddaughter
+					M,MXM,grandfather,grandson
+					M,FXM,grandfather,granddaughter
+
+					F,MXXF,g.-grandmother,g.-grandson
+					F,FXXF,g.-grandmother,g.-granddaughter
+					M,MXXM,g.-grandfather,g.-grandson
+					M,FXXM,g.-grandfather,g.-granddaughter
+					...
+					F,MX(X*N)F,<(g.-)*N>grandmother,<(g.-)*N>grandson
+					F,FX(X*N)F,<(g.-)*N>grandmother,<(g.-)*N>granddaughter
+					M,MX(X*N)M,<(g.-)*N>grandfather,<(g.-)*N>grandson
+					M,FX(X*N)M,<(g.-)*N>grandfather,<(g.-)*N>granddaughter
+					*/
+					StringBuffer sb1=new StringBuffer();
+					StringBuffer sb2=new StringBuffer();
+
+					sb1.append(getPraPrefix(diff-2));
+					sb2.append(getPraPrefix(diff-2));
+					
+					if(path1.startsWith("M")){
+						sb1.append(strings.get("grandfather"));
+					}
+					else{
+						sb1.append(strings.get("grandmother"));
+					}
+					if(path2.startsWith("M")){
+						sb2.append(strings.get("grandson"));
+					}
+					else{
+						sb2.append(strings.get("granddaughter"));
+					}
+					
+					first=sb1.toString();
+					second=sb2.toString();
+				}
+			}//end direct ancestors
+			else{  //not direct
+				if(diff==1){ //uncles
+					/*
+					MX,MXX,uncle,nephew
+					MX,FXX,uncle,niece
+					FX,MXX,aunt,nephew
+					FX,FXX,aunt,niece
+					*/
+					if(length1==2){
+						if(path1.startsWith("M")){
+							first=strings.get("uncle");
+						}
+						else{
+							first=strings.get("aunt");
+						}
+						if(path2.startsWith("M")){
+							second=strings.get("nephew");
+						}
+						else{
+							second=strings.get("niece");
+						}
+					}
+					else{ //length1>2 (diff==1)
+						/*
+						M(X*N)X , M(X*N)XX = N+1-yurodniy dyadya, N+1-yurodniy plemyannik
+						M(X*N)X , F(X*N)XX = N+1-yurodniy dyadya, N+1-yurodnaya plemyannica
+						F(X*N)X , M(X*N)XX = N+1-yurodnaya tyotya, N+1-yurodniy plemyannik
+						F(X*N)X , F(X*N)XX = N+1-yurodnaya tyotya, N+1-yurodnaya plemyannica
+						*/						
+						StringBuffer sb1=new StringBuffer();
+						StringBuffer sb2=new StringBuffer();
+						int prefix=length1-1;
+						
+						sb1.append(prefix);
+						sb1.append("-");
+						
+						sb2.append(prefix);
+						sb2.append("-");	
+
+						if(path1.startsWith("M")){
+							sb1.append(strings.get("yurodniy")+" ");
+							sb1.append(first=strings.get("uncle"));
+						}
+						else{
+							sb1.append(strings.get("yurodnaya")+" ");
+							sb1.append(first=strings.get("aunt"));
+						}
+						if(path2.startsWith("M")){
+							sb2.append(strings.get("yurodniy")+" ");
+							sb2.append(first=strings.get("nephew"));
+						}
+						else{
+							sb2.append(strings.get("yurodnaya")+" ");
+							sb2.append(first=strings.get("niece"));
+						}
+						
+						first=sb1.toString();
+						second=sb2.toString();	
+					}
+				}
+				else{//diff>1
+					/*
+					M-N=2 
+					M(X*N)X , M(X*M)X = (N+2)-yurodniy ded, (N+1)-yurodniy vnuchatiy plemyannik
+					M(X*N)X , F(X*M)X = (N+2)-yurodniy ded, (N+1)-yurodnaya vnuchataya plemyannica
+					F(X*N)X , M(X*M)X = (N+2)-yurodnaya babka, (N+1)-yurodniy vnuchatiy plemyannik
+					F(X*N)X , F(X*M)X = (N+2)-yurodnaya babka, (N+1)-yurodnaya vnuchataya plemyannica
+					
+					M(X*N)X , M(X*M)X = (N+2)-yurodniy (M-N-2)-raza pra- ded, (N+1)-yurodniy (M-N-2)-raza vnuchatiy plemyannik
+					M(X*N)X , F(X*M)X = (N+2)-yurodniy (M-N-2)-raza pra- ded, (N+1)-yurodnaya (M-N-2)-raza vnuchataya plemyannica
+					F(X*N)X , M(X*M)X = (N+2)-yurodniy (M-N-2)-raza pra- babka, (N+1)-yurodniy (M-N-2)-raza vnuchatiy plemyannik
+					F(X*N)X , F(X*M)X = (N+2)-yurodniy (M-N-2)-raza pra- babka, (N+1)-yurodnaya (M-N-2)-raza vnuchataya plemyannica
+
+					*/
+					StringBuffer sb1=new StringBuffer();
+					StringBuffer sb2=new StringBuffer();
+					
+					int prefix=length1;
+					sb1.append(prefix);
+					sb1.append("-");
+					
+					if(path1.startsWith("M")){
+						sb1.append(strings.get("yurodniy")+" ");
+					}
+					else{
+						sb1.append(strings.get("yurodnaya")+" ");
+					}
+
+					if(prefix>2){
+						sb2.append(prefix-1);
+						sb2.append("-");					
+						if(path2.startsWith("M")){
+							sb2.append(strings.get("yurodniy")+" ");
+						}
+						else{
+							sb2.append(strings.get("yurodnaya")+" ");
+						}
+					}
+					
+					int n=diff-2;
+					sb1.append(getPraPrefix(n)); //will be "" - if n=0
+					sb2.append(getPraPrefix(n)); //will be "" - if n=0		
+					
+					if(path1.startsWith("M")){
+						sb1.append(strings.get("grandfather"));
+					}
+					else{
+						sb1.append(strings.get("grandmother"));
+					}
+					if(path2.startsWith("M")){
+						sb2.append(first=strings.get("vnuchatiy"));
+						sb2.append(" ");
+						sb2.append(first=strings.get("nephew"));
+					}
+					else{
+						sb2.append(first=strings.get("vnuchataya"));
+						sb2.append(" ");
+						sb2.append(first=strings.get("niece"));
+					}
+					
+					first=sb1.toString();
+					second=sb2.toString();					
+				}
+
+			}
+		}
+		
+		if(switched)
+			return new String[]{second, first};		
+		else
+			return new String[]{first, second};
+	}
+	
+	
+	private String getPraPrefix(int n){
+		
+		if(n==0){
+			return "";
+		}
+		else{
+			//collect prefix:
+			String pra=strings.get("prefix");
+			StringBuffer praBuffer=new StringBuffer();
+			
+			if(n==1){ //praded
+				praBuffer.append(pra);
+			}
+			else if(n==2){ //prapraded
+				praBuffer.append(pra);
+				praBuffer.append(pra);
+			}
+			else if(n==3){ //praprapraded
+				praBuffer.append(pra);
+				praBuffer.append(pra);
+				praBuffer.append(pra);
+			}
+			else{ //n>3
+				//(4 pra-) ded
+				praBuffer.append("(");
+				String nAsString=Integer.toString(n);
+				praBuffer.append(nAsString);
+				praBuffer.append(" ");
+				
+				if(nAsString.endsWith("2") || nAsString.endsWith("3") || nAsString.endsWith("4")){
+					praBuffer.append(strings.get("raza"));	
+				}
+				else{
+					praBuffer.append(strings.get("raz"));
+				}
+				
+				praBuffer.append(" ");
+				praBuffer.append(pra);
+				praBuffer.append("-) ");
+			}
+			return praBuffer.toString();
+		}
+	}
+	
+
+}
+===========================================================
+# cat RelationsBase.java 
+
+package org.is.ais.gedcom.tworelatives;
+
+import org.is.ais.gedcom.Strings;
+
+public abstract class RelationsBase {
+	
+	protected Strings strings; //Strings is just a wrapper for properties (names) below
+	
+	
+	public RelationsBase() throws Exception{
+		strings=new Strings();
+	}
+	
+	public abstract String[] get(String path1, String path2);
+	
+}
+===========================================================
+# cat relations_en.lang
+
+mother=mother
+father=father
+sister=sister
+brother=brother
+son=son
+daughter=daughter
+grandmother=grandmother
+grandfather=grandfather
+grandson=grandson
+granddaughter=granddaughter
+aunt=aunt
+uncle=uncle
+nephew=nephew
+niece=niece
+great-uncle=great-uncle
+great-aunt=great-aunt
+grand-nephew=grand-nephew
+grand-niece=grand-niece
+cousin=cousin
+prefix=g.-
+
+===========================================================
+# cat relations_ru.lang
+
+mother=мать
+father=отец
+sister=сестра
+brother=брат
+son=сын
+daughter=дочь
+grandmother=бабушка
+grandfather=дед
+grandson=внук
+granddaughter=внучка
+aunt=тетя
+uncle=дядя
+nephew=племянник
+niece=племянница
+yurodniy=юродный
+yurodnaya=юродная
+vnuchatiy=внучатый
+vnuchataya=внучатая
+raza=раза
+raz=раз
+prefix=пра
+
+===========================================================
+# cat relations_ru_translit.lang
+#
+# This is pseudo russian language template - to debug and to be used as 
+# a template for different coding pages (relations_ru.lang is UTF-8 while
+# this file is pure ASCII). When used as a template - change only the 
+# right sides (after =) and do not touch the left sides!
+#
+# The purpose of this file is unit tests of russian terminology in code 
+# page independant way
+#
+
+mother=mat
+father=otec
+sister=sestra
+brother=brat
+son=sin
+daughter=doch
+grandmother=babushka
+grandfather=ded
+grandson=vnuk
+granddaughter=vnuchka
+aunt=tyotya
+uncle=dyadya
+nephew=plemyannik
+niece=plemyannica
+yurodniy=yurodniy
+yurodnaya=yurodnaya
+vnuchatiy=vnuchatiy
+vnuchataya=vnuchataya
+raza=raza
+raz=raz
+prefix=pra
+===========================================================
+# cat relations_ru_Windows-1251.lang
+
+mother=ìàòü
+father=îòåö
+sister=ñåñòðà
+brother=áðàò
+son=ñûí
+daughter=äî÷ü
+grandmother=áàáóøêà
+grandfather=äåä
+grandson=âíóê
+granddaughter=âíó÷êà
+aunt=ò¸òÿ
+uncle=äÿäÿ
+nephew=ïëåìÿííèê
+niece=ïëåìÿííèöà
+yurodniy=þðîäíûé
+yurodnaya=þðîäíàÿ
+vnuchatiy=âíó÷àòûé
+vnuchataya=âíó÷àòàÿ
+raza=ðàçà
+raz=ðàç
+prefix=ïðà
+
+
+
+

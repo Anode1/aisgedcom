@@ -1,0 +1,31 @@
+#
+# This is pseudo russian language template - to debug and to be used as 
+# a template for different coding pages (relations_ru.lang is UTF-8 while
+# this file is pure ASCII). When used as a template - change only the 
+# right sides (after =) and do not touch the left sides!
+#
+# The purpose of this file is unit tests of russian terminology in code 
+# page independant way
+#
+
+mother=mat
+father=otec
+sister=sestra
+brother=brat
+son=sin
+daughter=doch
+grandmother=babushka
+grandfather=ded
+grandson=vnuk
+granddaughter=vnuchka
+aunt=tyotya
+uncle=dyadya
+nephew=plemyannik
+niece=plemyannica
+yurodniy=yurodniy
+yurodnaya=yurodnaya
+vnuchatiy=vnuchatiy
+vnuchataya=vnuchataya
+raza=raza
+raz=raz
+prefix=pra

@@ -1,0 +1,42 @@
+FirstName
+FirstName (1600)
+FirstName (ABT 1600)
+FirstName (14 AUG 1855-5 APR 1877)
+FirstName /Surname/
+FirstName /Surname/ (ABT 1800)
+FirstName /Surname/ (?)
+FirstName /Surname/ (?-ABT 1800)
+FirstName /Surname/ (?-?)
+FirstName /Surname/ (AFT 1800-?)
+FirstName /Surname/ (1600-1680)
+/Surname/ (28 OCT 1852-BEF 1880)
+/Surname/ (?-AFT 1673)
+/Surname (?)/ (28 OCT 1852-BEF 1880)
+FirstName /Surname/ (1742-20 DEC 1799), Place of Origin
+FirstName /Surname (MadenSurname)/ (1764-6 OCT 1813)
+FirstName Another Name /Surname (MadenSurname)/ (14 AUG 1855-5 APR 1877), Place of origin
+FirstName Another Name /Surname (MadenSurname)/ (14 AUG 1855-5 APR 1877) Place of origin
+FirstName // (1600)
+   <== nothing is known
+// <== nothing is known
+/?/ <== nothing is known but surname refining is the priority
+FirstName //
+FirstName /?/
+FirstName /? (?)/
+FirstName /Surname (?)/
+FirstName /Surname(?)/ ?
+FirstName /Surname/, ?
+FirstName /Surname/ (?)
+FirstName /Surname/ (?), ?
+# this is a comment
+
+# commas in the names or surnames before the names - as some languages require
+# and as in GEDCOM
+/Surname/, AnotherName 
+/Surname/, AnotherName (1800)
+/Surname/, AnotherName (1800), Place of origin
+
+# if place of origin exists and not to confuse it with commas in names - use dates as the delimiter
+Names (?), Place of origin
+#or even
+Names (?) Place of origin

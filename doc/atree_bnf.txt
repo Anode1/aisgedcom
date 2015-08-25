@@ -1,0 +1,35 @@
+============================
+atree format grammar
+============================
+
+Grammar below is BNF-like, where terminals are delimited by " " (double-quotes), non-terminals -
+by < >, and simple regular expresions like character grouping [ ], repetitions *, +, {N,M} are used.
+[:blank:], [:graph:], [:alpha:], [:punct:], [:digit:] - are standard POSIX character classes.
+( ) denotes grouping, ? ? - verbal explanation of a character class
+
+
+
+<atree> ::= ( <atree_line> "\n" )*
+<atree_line> ::= <comment_line> | <person_line> 
+<comment_line> ::= "#" (<any_text_char>)*
+<space_or_tab> :== [:blank:]
+<person_line> ::= <path> <space_or_tab> (<optional_haplogroups> <space_or_tab>){0,1} <names>{0,1} <dates>{0,1} "," <location_other>{0,1}
+<optional_haplogroups> ::= "[" ([:alpha:] | [:digit:]) "]"
+<path> :== [FM]+
+<location_other> ::= (<any_text_char>)*
+<any_text_char> ::= [:alpha:] | [:punct:] | [:blank:]
+<space_or_tab> ::= [:blank:]
+<names> ::= <names_characters>* <surnames>{0,1} <names_characters>*
+<surnames> ::= "/" <names_characters>* <maiden_names>{0,1} "/"
+<names_characters> ::= ? any characters except '/', and no dates inside (valid date will be considered as names part delimiter) ?
+<maiden_names> ::= "(" <names_characters>+ ")"
+<dates> ::= "(" <birth_date_or_lifetime_range> ")"
+<birth_date_or_lifetime_range> ::= <gedcom_year> | <full_date> | <lifetime_range> | "?"
+<lifetime_range> ::= <gedcom_date> "-" <gedcom_date>
+<gedcom_date> ::= <full_date> | <short_date> | <gedcom_year> | "?"
+<full_date> ::= <date> [ ] <month> [ ] <year>
+<short_date> ::= <month> [ ] <year>
+<gedcom_year> ::= ("ABT " | "BEF " | "AFT ")* <year>
+<year> ::= [:digit:]{4}
+<month> ::= "JAN" | "FEB" | "MAR" | "APR" | "MAY" | "JUN" | "JUL" | "AUG" | "SEP" | "OCT" | "NOV" | "DEC"
+<date> ::= [:digit:]{1,2}
