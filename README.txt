@@ -2,7 +2,7 @@ Given GEDCOM file, the program groups persons by haplogroups and prints differen
 Given atree - the program generates GEDCOM file from it. 
 Utility also can be used for text files transcoding (including into phonetic from russian windows-1251 GEDCOMs etc).
 
-====================================================================================================
+========================================================================
 Installation:
 
 Unzip aisconvert distribution (it will create "aisgedcom" directory). 
